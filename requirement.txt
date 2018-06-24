@@ -1,0 +1,6 @@
+apscheduler
+pyyaml
+pymysql
+httplib2
+pycrypto
+IPy
