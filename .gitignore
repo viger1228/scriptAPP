@@ -1,0 +1,5 @@
+*.log
+*.pyc
+*.pid
+*.swp
+__pycache__
