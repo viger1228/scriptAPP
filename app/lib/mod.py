@@ -35,6 +35,7 @@ class Script(object):
         for n in dir(self):
             if n in ['run', 'get_func']: continue
             if n.find('__') == 0: continue
+            if n.find('Mod') >= 0: continue
             if not callable(getattr(self, n)): continue
             func.append(n)
         return func
