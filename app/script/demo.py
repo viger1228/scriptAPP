@@ -32,9 +32,10 @@ class Mod(mod.Script):
     def demo(self):
         try:
             message = self.args['message']
-        except Exception:
+        except Exception as e:
             error = traceback.format_exc()
-            self.logger.info(error)
+            self.logger.error(error)
+            return
         self.logger.info(message)
         
 if __name__ == '__main__':

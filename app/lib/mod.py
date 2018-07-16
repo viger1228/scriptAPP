@@ -28,7 +28,7 @@ class Script(object):
             func()
         except Exception:
             error = traceback.format_exc()
-            self.logger.info(error)
+            self.logger.error(error)
 
     def get_func(self):
         func = []
