@@ -5,8 +5,9 @@
 """
 Changelogs
 
-2018-06-24: Add Function query, update
-2018-03-21: init
+2018.07.10: Add Function insert
+2018.06.24: Add Function query, update
+2018.03.21: init
 
 """
 
@@ -43,6 +44,7 @@ class MySQL():
     def query(self, sql):
         '''
         Only use select method
+
         '''
         ctype = sql.split()[0]
         if ctype.lower() == 'select':
@@ -56,6 +58,34 @@ class MySQL():
             return rsp
         else:
             raise NotImplementedError('Only use select method')
+
+    def insert(self, table, data, _type=0):
+        '''
+        Insert data from dict list
+            type = 0, INSERT INTO
+            type = 1, INSERt IGNORE INTO
+            type = 2, REPLACE INTO
+
+        '''
+        type_dict = {
+            0: 'INSERT INTO',
+            1: 'INSERT IGNORE INTO',
+            2: 'REPLACE INTO',
+        }
+        if not data: 
+            raise RuntimeError('No data')
+            
+        cols = [n for n in data[0].keys()]
+        col = ','.join(['`{}`'.format(n) for n in cols])
+        sql = '{} {} ({}) VALUE\n'.format(type_dict[_type], table, col)
+        rows = []
+        for n in data:
+            row = []
+            for c in cols:
+                row.append("'{}'".format(n[c]))
+            rows.append('({})'.format(','.join(row)))
+        sql += ',\n'.join(rows)
+        self.cmd(sql)
 
     def update(table, key, data):
     
