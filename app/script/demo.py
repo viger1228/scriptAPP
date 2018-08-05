@@ -5,6 +5,7 @@
 """
 Changelogs
 
+2018.08.02: Add end print
 2018.06.24: Add Inheritance
 2018.04.19: init
 
@@ -37,6 +38,7 @@ class Mod(mod.Script):
             self.logger.error(error)
             return
         self.logger.info(message)
+        self.logger.info('{} END'.format(self.args['function'].upper()))
         
 if __name__ == '__main__':
 
