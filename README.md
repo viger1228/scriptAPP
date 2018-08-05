@@ -1,10 +1,3 @@
-      type: 'mysql'
-      host: '127.0.0.1'
-      port: 3306
-      user: 'root'
-      password: 'P@ssw0rd'
-      database: 'app'
-      app_name: 'script# ScriptAPP
 **ScriptAPP** is the easy way to manage python script as task
 ## Installing
 First, you should install python3 and pip3 in your computer.
