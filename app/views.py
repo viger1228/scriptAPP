@@ -79,7 +79,6 @@ def get_mysql_schedule(conf):
 # Reload the module
 def run_job(*args, **kwargs):
     attr = kwargs['__attr']
-    del kwargs['__attr']
     importlib.reload(attr)
     mod = attr.Mod(logger)
     mod.run(*args, **kwargs)
