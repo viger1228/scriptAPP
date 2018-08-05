@@ -60,7 +60,7 @@ def timer(func):
         s_time = time.time()
         rsp = func(*args, **kwargs)
         e_time = time.time()
-        msg = '%0.2f sec'%(e_time - s_time)
+        msg = '%s %0.2f sec'%(func.__name__, e_time - s_time)
         if logger:
             logger.info(msg)
         else:
