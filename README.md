@@ -1,4 +1,4 @@
-# ScriptAPI
+# ScriptAPP
 **ScriptAPP** is the easy way to manage python script as task
 ## Installing
 First, you should install python3 and pip3 in your computer.
@@ -84,8 +84,15 @@ Setting the app.yml and import app.sql
       database: 'app'
       app_name: 'script
       
-    >> mysql -h 127.0.0.1 -u root -pP@ssw0rd --execute='CREATE DATABASE app DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'
+    >> mysql -h 127.0.0.1 -u root -pP@ssw0rd -e 'CREATE DATABASE app DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'
     >> mysql -h 127.0.0.1 -u root -pP@ssw0rd app < app/app.sql
+    >> mysql -h 127.0.0.1 -u root -pP@ssw0rd app -e 'SELECT * FROM t_schedule'
+    +----+--------+--------+--------+-----------------------------------------------------+----------+------+------+------+--------+--------+--------+---------------------+
+    | id | app    | class  | script | kwargs                                              | trigger  | week | day  | hour | minute | second | enable | update              |
+    +----+--------+--------+--------+-----------------------------------------------------+----------+------+------+------+--------+--------+--------+---------------------+
+    |  1 | script | script | demo   | {"function":"demo","message":"Interval is running"} | interval | 0    | 0    | 0    | 0      | 5      |      1 | 2018-08-05 10:03:49 |
+    |  2 | script | script | demo   | {"function":"demo","message":"Cron is running"}     | cron     | *    | *    | *    | *      | */5    |      1 | 2018-08-04 23:55:21 |
+    +----+--------+--------+--------+-----------------------------------------------------+----------+------+------+------+--------+--------+--------+---------------------+
     
     >> ./run.py 
     [2018-08-05 02:36:33] -  Start Job App
