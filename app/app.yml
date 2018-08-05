@@ -1,0 +1,15 @@
+# Set Source of Schedule
+schedule:
+
+#Get the schedule from yaml file
+  type: 'file'
+  path: 'schedule.yml'
+
+#GET the schedule from MySQL
+#  type: 'mysql'
+#  host: '127.0.0.1'
+#  port: 3306
+#  user: 'root'
+#  password: 'P@ssw0rd'
+#  database: 'app'
+#  app_name: 'script'

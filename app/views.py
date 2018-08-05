@@ -3,6 +3,7 @@
 import os
 import sys
 import yaml
+import json
 import copy
 import logging
 import importlib
@@ -12,6 +13,7 @@ from datetime import datetime
 
 from app import app
 from app.lib import tool
+from app.lib import mysql
 
 logger = tool.Log().stream_logger(__name__)
 
@@ -25,7 +27,53 @@ job_id = []
 
 # Get Schedule
 def get_schedule():
-    with open('%s/schedule.yml'%(path)) as y: schedule = yaml.load(y)
+    try:
+        with open('{}/app.yml'.format(path)) as y: setting = yaml.load(y)
+        conf = setting['schedule']
+        if conf['type'] == 'file':
+            with open('{}/{}'.format(path, conf['path'])) as y: 
+                schedule = yaml.load(y)
+        elif conf['type'] == 'mysql':
+            schedule = get_mysql_schedule(conf)
+    except Exception as e:
+        logger.error(traceback.format_exc())
+        return
+    return schedule
+
+def get_mysql_schedule(conf):
+    db = mysql.MySQL(conf['host'], conf['port'],
+        conf['user'], conf['password'], conf['database'])
+    sql = '''
+        SELECT `class`,`script`,`kwargs`,`trigger`,
+            `week`,`day`,`hour`,`minute`,`second`
+        FROM `t_schedule` WHERE `app` = '{}' AND `enable` = 1
+    '''.format(conf['app_name'])
+    data = db.query(sql)
+    schedule = {}
+    for n in data:
+        cls = n['class']
+        if cls not in schedule: schedule[cls] = []
+        task = {
+            'name': n['script'],
+            'setting': {
+                'kwargs': json.loads(n['kwargs']),
+                'trigger': n['trigger'],
+            }
+        }
+        if n['trigger'] == 'interval':
+            task['setting']['weeks'] = int(n['week'])
+            task['setting']['days'] = int(n['day'])
+            task['setting']['hours'] = int(n['hour'])
+            task['setting']['minutes'] = int(n['minute'])
+            task['setting']['seconds'] = int(n['second'])
+        elif n['trigger'] == 'cron':
+            task['setting']['week'] = n['week']
+            task['setting']['day'] = n['day']
+            task['setting']['hour'] = n['hour']
+            task['setting']['minute'] = n['minute']
+            task['setting']['second'] = n['second']
+        schedule[cls].append(copy.deepcopy(task))
+    db.close()
     return schedule
 
 # Reload the module
@@ -49,7 +97,7 @@ def add_job(new_job):
                 attr = __import__('app.%s.%s'%(key, m['name']), fromlist=True)
                 if 'kwargs' not in m['setting']: m['setting']['kwargs'] = {}
                 m['setting']['kwargs']['__attr'] = attr
-                job = app.add_job(run_job, **m['setting'])
+                job = app.add_job(run_job, **m['setting'], misfire_grace_time=60)
                 job_id.append(job.id)
             except Exception:
                 err = traceback.format_exc()
@@ -62,8 +110,8 @@ def chk_job():
     update = False
     new_job = get_schedule()
     if not new_job:
-        logger.info('No Setting in schedule.yaml')
-        return
+        logger.info('Get Schedule Error')
+        sys.exit()
     if cur_job != new_job:
         if job_id: logger.info('Update Job!')
         for _id in job_id:
@@ -81,6 +129,6 @@ def reload():
         logger = tool.Log().file_logger(__name__)
         
 
-app.add_job(reload, trigger='cron', hour=0)
-app.add_job(chk_job, trigger='interval', seconds=10)
+app.add_job(reload, trigger='cron', hour=0, misfire_grace_time=60)
+app.add_job(chk_job, trigger='interval', seconds=10, misfire_grace_time=60)
 chk_job()
