@@ -120,7 +120,7 @@ def chk_job():
 # Split the log file at 00:00
 def reload():
     global logger
-    imp.reload(tool)
+    importlib.reload(tool)
     handler = logger.handlers[-1]
     if isinstance(handler, logging.FileHandler):
         for handler in logger.handlers:
