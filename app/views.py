@@ -103,14 +103,14 @@ def add_job(new_job):
                 logger.info(err)
 
 # Check Schedule
-def chk_job():
+def chk_job(flag=0):
     global cur_job
     global job_id
     update = False
     new_job = get_schedule()
     if not new_job:
         logger.info('Get Schedule Error')
-        sys.exit()
+        if flag: sys.exit()
     if cur_job != new_job:
         if job_id: logger.info('Update Job!')
         for _id in job_id:
@@ -130,4 +130,4 @@ def reload():
 
 app.add_job(reload, trigger='cron', hour=0, misfire_grace_time=60)
 app.add_job(chk_job, trigger='interval', seconds=10, misfire_grace_time=60)
-chk_job()
+chk_job(1)
