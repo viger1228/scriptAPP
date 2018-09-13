@@ -43,6 +43,8 @@ class Mod(mod.Script):
 if __name__ == '__main__':
 
     os.chdir(sys.path[0])
+    print(sys.path[0])
+    print(sys.path)
     logger = tool.Log().stream_logger('info')
 
     mod = Mod(logger)
