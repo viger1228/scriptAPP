@@ -4,6 +4,9 @@
 # author: walker
 
 """
+2018.11.03: Add Class Version
+2018.11.01: Add Class Args
+2018.08.02: Add Timer Func name
 2018-05-19: Add HTTP rsponse Code
 2018-02-15: Add class Crypto
 2018-01-23: Add sys.path[0] for log path 
@@ -27,6 +30,7 @@ http_msg = {
     204: 'No Content',
     400: 'Bad Request',
     401: 'Unauthorized',
+    403: 'Forbidden',
     404: 'Not Found',
     405: 'Method Not Allowed',
     500: 'Internal Server Error',
@@ -60,13 +64,57 @@ def timer(func):
         s_time = time.time()
         rsp = func(*args, **kwargs)
         e_time = time.time()
-        msg = '%s %0.2f sec'%(func.__name__, e_time - s_time)
+        msg = '%0.2f sec'%(e_time - s_time)
         if logger:
             logger.info(msg)
         else:
             print(msg)
         return rsp
     return wrap
+
+# Version
+class Version(object):
+
+    def __init__(self):
+        info = sys.version_info
+        self.ver = '{}.{}.{}'.format(info.major, info.minor, info.micro)
+
+    def compare(self, op, ver):
+        m = getattr(operator, op)
+        s = [int(n) for n in self.ver.split('.')]
+        t = [int(n) for n in ver.split('.')]
+        return m(s,t)
+
+# Parse Argument
+class Args(object):
+
+    def __init__(self, data):
+        self.data = data
+        self.args = {}
+
+    def __getitem__(self, key):
+        return self.args[key]
+
+    def __setitem__(self, key, val):
+        self.args[key] = val
+
+    def __len__(self):
+        return len(self.args)
+
+    def parse(self, key, default=''):
+        arg = ''
+        if key in self.data:
+            if not self.data[key] or self.data[key] == '':
+                arg = default
+            else:
+                arg = self.data[key]
+        else:
+            if default != '':
+                arg = default
+            else:
+                error = 'Missing parameters {}'.format(key)
+                raise ValueError(error)
+        self.args[key] = arg
 
 class Log(object):
     PATH = sys.path[0] + '/logs/'

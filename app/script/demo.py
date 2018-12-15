@@ -30,27 +30,28 @@ class Mod(mod.Script):
         # self.args
         # self.logger
         
-    def demo(self):
+    def echo(self):
+        args = tool.Args(self.args)
         try:
-            message = self.args['message']
+            args.parse('message', 'Hello World')
         except Exception as e:
             error = traceback.format_exc()
             self.logger.error(error)
             return
+
+        message = args['message']
         self.logger.info(message)
         self.logger.info('{} END'.format(self.args['function'].upper()))
         
 if __name__ == '__main__':
 
     os.chdir(sys.path[0])
-    print(sys.path[0])
-    print(sys.path)
     logger = tool.Log().stream_logger('info')
 
     mod = Mod(logger)
     parser = argparse.ArgumentParser()
     parser.add_argument('function', help='{{{}}}'.format('|'.join(mod.get_func())))
-    parser.add_argument('--message', metavar='', help='send the message' ,default='Hello')
+    parser.add_argument('--message', metavar='', help='send the message')
     args = parser.parse_args()
     kwargs = vars(args)
     
