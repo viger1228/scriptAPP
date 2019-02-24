@@ -84,10 +84,15 @@ class MySQL():
             for c in cols:
                 row.append("'{}'".format(n[c]))
             rows.append('({})'.format(','.join(row)))
+            if len(rows) >= 1000:
+                sql += ',\n'.join(rows)
+                self.cmd(sql)
+                sql = '{} {} ({}) VALUE\n'.format(type_dict[_type], table, col)
+                rows = []
         sql += ',\n'.join(rows)
         self.cmd(sql)
 
-    def update(table, key, data):
+    def update(self, table, key, data):
     
         ''' 
         Update data with case
@@ -118,6 +123,27 @@ class MySQL():
             sqls.append(case)
         sql += ',\n'.join(sqls)
         sql += '\nWHERE {} IN ({})'.format(key, ','.join([str(n) for n in _ids]))
+        return self.cmd(sql)
+
+    def delete(self, table, data):
+        '''
+        Delete data
+            table  : database tables
+            data   : data list constituted by dict
+        '''
+        sql = 'DELETE FROM {} WHERE\n'.format(table)
+        conds = []
+        for n in data:
+            cond = []
+            for key, val in n.items():
+                if isinstance(val, int) or isinstance(val, float):
+                    s = '`{}`={}'.format(key, val)
+                else:
+                    s = '`{}`=\'{}\''.format(key, val)
+                cond.append(s)
+            t = ' AND '.join(cond)
+            conds.append('({})'.format(t))
+        sql += ' OR\n'.join(conds)
         return self.cmd(sql)
         
     def close(self):
