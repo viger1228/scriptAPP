@@ -49,7 +49,7 @@ Setting the app.yml and schedule.yml
     - name: demo
       setting:
         args: []
-        kwargs: {'function':'demo','message':'Interval is running'}
+        kwargs: {'function':'echo','message':'Interval is running'}
         trigger: 'interval'
         hours: 0
         minutes: 0
@@ -57,7 +57,7 @@ Setting the app.yml and schedule.yml
     - name: demo
       setting:
         args: []
-        kwargs: {'function':'demo','message':'Cron is running'}
+        kwargs: {'function':'echo','message':'Cron is running'}
         trigger: 'cron'
         hour: '*'
         minute: '*'
@@ -90,8 +90,8 @@ Setting the app.yml and import app.sql
     +----+--------+--------+--------+-----------------------------------------------------+----------+------+------+------+--------+--------+--------+---------------------+
     | id | app    | class  | script | kwargs                                              | trigger  | week | day  | hour | minute | second | enable | update              |
     +----+--------+--------+--------+-----------------------------------------------------+----------+------+------+------+--------+--------+--------+---------------------+
-    |  1 | script | script | demo   | {"function":"demo","message":"Interval is running"} | interval | 0    | 0    | 0    | 0      | 5      |      1 | 2018-08-05 10:03:49 |
-    |  2 | script | script | demo   | {"function":"demo","message":"Cron is running"}     | cron     | *    | *    | *    | *      | */5    |      1 | 2018-08-04 23:55:21 |
+    |  1 | script | script | demo   | {"function":"echo","message":"Interval is running"} | interval | 0    | 0    | 0    | 0      | 5      |      1 | 2018-08-05 10:03:49 |
+    |  2 | script | script | demo   | {"function":"echo","message":"Cron is running"}     | cron     | *    | *    | *    | *      | */5    |      1 | 2018-08-04 23:55:21 |
     +----+--------+--------+--------+-----------------------------------------------------+----------+------+------+------+--------+--------+--------+---------------------+
     
     >> ./run.py 
