@@ -19,13 +19,13 @@ You can execute directly when you finish the script
     usage: demo.py [-h] [--message] function
 
     positional arguments:
-      function    {demo}
+      function    {echo}
 
     optional arguments:
       -h, --help  show this help message and exit
       --message   send the message
 
-    >>  app/script/demo.py demo --message HelloWorld
+    >>  app/script/demo.py echo --message HelloWorld
     [2018-06-24 23:47:27,017][INFO][demo.py(line:38)] - HelloWorld
     [2018-06-24 23:47:27,018][INFO][tool.py(line:101)] - 0.0001 sec
     
