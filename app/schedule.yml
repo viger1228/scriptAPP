@@ -2,7 +2,7 @@ script:
 - name: demo
   setting:
     args: []
-    kwargs: {'function':'demo','message':'Interval is running'}
+    kwargs: {'function':'echo','message':'Interval is running'}
     trigger: 'interval'
     hours: 0
     minutes: 0
@@ -10,7 +10,7 @@ script:
 - name: demo
   setting:
     args: []
-    kwargs: {'function':'demo','message':'Cron is running'}
+    kwargs: {'function':'echo','message':'Cron is running'}
     trigger: 'cron'
     hour: '*'
     minute: '*'
