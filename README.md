@@ -1,5 +1,11 @@
 # ScriptAPP
+
+[![](https://img.shields.io/badge/powered%20by-walker-brightgreen.svg?style=flat-square)](https://github.com/viger1228) 
+
+[English](https://github.com/viger1228/scriptAPP/blob/master/README.md) 
+
 **ScriptAPP** is the easy way to manage python script as task
+
 ## Installing
 First, you should install python3 and pip3 in your computer.
 
@@ -17,18 +23,18 @@ You can execute directly when you finish the script
 
     >> app/script/demo.py --help
     usage: demo.py [-h] [--message] function
-
+    
     positional arguments:
       function    {echo}
-
+    
     optional arguments:
       -h, --help  show this help message and exit
       --message   send the message
-
+    
     >>  app/script/demo.py echo --message HelloWorld
     [2018-06-24 23:47:27,017][INFO][demo.py(line:38)] - HelloWorld
     [2018-06-24 23:47:27,018][INFO][tool.py(line:101)] - 0.0001 sec
-    
+
 ## Runing Schedule
 
 If you want to run the script periodically, you should set the schedule.
@@ -62,7 +68,7 @@ Setting the app.yml and schedule.yml
         hour: '*'
         minute: '*'
         second: '*/5'
-
+    
     >> ./run.py 
     [2018-06-24 23:51:02] -  Start Job App
     [2018-06-24 23:51:05,002][INFO][demo.py(line:38)] - Cron is running
@@ -113,9 +119,12 @@ Running
     >> ./nohup.sh start
     [2018-06-24 23:54:07] -  Start Job App
     walker   53991 37.0  1.1 224212 21424 pts/2    S+   23:54   0:00 python3 -u run.py scriptAPP
-
+    
     >> tailf logs/20180624.log 
     [2018-06-24 23:54:45,004][INFO][demo.py(line:38)] - Cron is running
     [2018-06-24 23:54:45,005][INFO][tool.py(line:101)] - 0.0004 sec
     [2018-06-24 23:54:47,747][INFO][demo.py(line:38)] - Interval is running
     [2018-06-24 23:54:47,747][INFO][tool.py(line:101)] - 0.0003 sec
+
+[MIT](https://github.com/viger1228/scriptAPP/blob/master/LICENSE) © Walker
+
