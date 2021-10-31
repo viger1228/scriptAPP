@@ -126,5 +126,7 @@ Running
     [2018-06-24 23:54:47,747][INFO][demo.py(line:38)] - Interval is running
     [2018-06-24 23:54:47,747][INFO][tool.py(line:101)] - 0.0003 sec
 
+## License
+
 [MIT](https://github.com/viger1228/scriptAPP/blob/master/LICENSE) © Walker
 
